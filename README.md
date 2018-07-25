@@ -121,10 +121,8 @@ the result, which again defeats the system.
 Acknowledgements
 ----------------
 
-This API is pretty much a verbatim walk through of the 
-[https://wiki.openssl.org/images/e/eb/T-rsa.c.tar.gz](T-rsa.c.tar.gz) 
-sample program on the
-[https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying](OpenSSL wiki).
+This API is pretty much a verbatim walk through of the [T-rsa.c.tar.gz][1]
+sample program on the [OpenSSL wiki][2].
 
 All I've done is just separated the key generation, sign and verify functions 
 into separate files, inlined the underlying calls and used RSA get/set macros 
@@ -136,3 +134,6 @@ work.
 
 *If you've gone through the original sample program, you'll note that I've
 used it's message as my baseline for the test.*
+
+[1]: https://wiki.openssl.org/images/e/eb/T-rsa.c.tar.gz
+[2]: https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying
