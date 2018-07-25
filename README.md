@@ -20,7 +20,6 @@ Features:
 - a key generation utility that generates public and private keys as separate
   header files.
 
-
 Setup
 -----
 
@@ -79,8 +78,8 @@ application will have to split it into the message and signature for verificatio
 Keys
 ----
 
-Once compiled bin/keys utility will generate a new public/key.h and private/key.h 
-pair.
+Once compiled, the bin/keys utility will generate a new public/key.h and 
+private/key.h pair.
 
 Though it is quick and easy to generate new keys, once your application has been
 publicly released, the keys you released with are the ones you need to stick
@@ -92,31 +91,48 @@ into.  It's fine to check in the public key into a public repository, but
 don't check the private key into a public repository, as now anyone can sign
 with authority.
 
-(You can't check them into your fork of this repository unless you change the
-.gitignore, but I'm not too sure why you'd do that.)
+*You can't check them into your fork of this repository unless you change the
+.gitignore, but I'm not too sure why you'd do that.*
 
 
 Notes
 -----
 
-The signed & verified message is just a string, so an application developper can
-serialize what ever kind of "feature authorization" is needed into the message,
-then deserialize the message once it has been verified.
+The signed & verified message is just a string, so you can serialize what ever 
+kind of "feature authorization" is needed into the message, then deserialize the
+message once it has been verified.
 
-One thing to consider is that the signed messages are public, so they can be
-freely distributed, which means that without a mechanism to dissuade this kind
-of distribution, the whole system can be defeated.
+One thing to consider is that signed messages are public, so they can be freely 
+distributed, which means that without a mechanism to dissuade this kind of 
+distribution, the whole system can be defeated.
 
-The first line against this is to alwasy serialize an expiry date, in which case
+The first line against this is to always serialize an expiry date, in which case
 if the feature set is leaked, at least it won't be forever.
 
 The second line against this is to serialize the personal contact information of
 the recipient into the authorization, in which case if the feature set is leaked, 
-you know who leaked it.  This will deter most people, as it is a clear, public 
-statement that they are ripping you off.
+you know darn well who leaked it.  This will deter most people, as it is a clear, 
+public statement that they are ripping you off.
 
 Another thing to consider is that the granting of "trial" feature authorization
 should not be automated, as it is easy to script issuing the request and unpacking
-the result, again defeating the system.
+the result, which again defeats the system.
 
+Acknowledgements
+----------------
 
+This API is pretty much a verbatim walk through of the 
+[https://wiki.openssl.org/images/e/eb/T-rsa.c.tar.gz](T-rsa.c.tar.gz) 
+sample program on the
+[https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying](OpenSSL wiki).
+
+All I've done is just separated the key generation, sign and verify functions 
+into separate files, inlined the underlying calls and used RSA get/set macros 
+and BN conversion macros to write to and include the keys from header files.
+
+But since the OpenSSL documentation is somewhat cryptic *(pun intended)*, I 
+spent quite a few hours sifting through the source code to the key persistence 
+work.
+
+*If you've gone through the original sample program, you'll note that I've
+used it's message as my baseline for the test.*
