@@ -10,7 +10,7 @@ not a third party.
 
 This is accomplished by the application distributor signing the "feature 
 authorization" with a private key and having the application verify the "feature
-authorization" with it's embedded public key.
+authorization" with the associated public key.
 
 
 Features:
@@ -41,7 +41,6 @@ If all goes well:
   compiling.  That's OK.  Everything still works.
 - You'll see two line of text.  The one in green has been verified successfully,
   while the one in red has been tampered with and fails the check.
-
 
 
 Sign
@@ -77,6 +76,26 @@ Note that public application will receive a "signed message" and that the
 application will have to split it into the message and signature for verification.
 
 
+Keys
+----
+
+Once compiled bin/keys utility will generate a new public/key.h and private/key.h 
+pair.
+
+Though it is quick and easy to generate new keys, once your application has been
+publicly released, the keys you released with are the ones you need to stick
+with for good.  Which means to say that you should check in your keys *before* 
+you release so that you don't loose your private key *after* your release.
+
+But of course when you do check in your keys, be aware of where you check them
+into.  It's fine to check in the public key into a public repository, but 
+don't check the private key into a public repository, as now anyone can sign
+with authority.
+
+(You can't check them into your fork of this repository unless you change the
+.gitignore, but I'm not too sure why you'd do that.)
+
+
 Notes
 -----
 
@@ -99,3 +118,5 @@ statement that they are ripping you off.
 Another thing to consider is that the granting of "trial" feature authorization
 should not be automated, as it is easy to script issuing the request and unpacking
 the result, again defeating the system.
+
+
