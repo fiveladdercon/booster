@@ -20,6 +20,7 @@ Features:
 - a key generation utility that generates public and private keys as separate
   header files.
 
+
 Setup
 -----
 
@@ -72,7 +73,7 @@ This function will verify that the message `*imessage` with the signature
 The function will return 1 on success or 0 on failure.
 
 Note that public application will receive a "signed message" and that the 
-application will have to split it into the message and signature for verification.
+application will have to split it into message and signature for verification.
 
 
 Keys
@@ -129,11 +130,11 @@ into separate files, inlined the underlying calls and used RSA get/set macros
 and BN conversion macros to write to and include the keys from header files.
 
 But since the OpenSSL documentation is somewhat cryptic *(pun intended)*, I 
-spent quite a few hours sifting through the source code to the key persistence 
-work.
+spent quite a few hours sifting through the source code to get the key 
+persistence work.
 
 *If you've gone through the original sample program, you'll note that I've
-used it's message as my baseline for the test.*
+used it's message as my baseline for the sign & verify test.*
 
 [1]: https://wiki.openssl.org/images/e/eb/T-rsa.c.tar.gz
 [2]: https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying
