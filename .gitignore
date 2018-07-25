@@ -1,0 +1,9 @@
+# Compiled
+bin/
+
+# Keys
+public/key.h
+private/key.h
+
+# Tests
+*.txt
