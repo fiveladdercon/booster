@@ -2,8 +2,7 @@
 bin/
 
 # Keys
-public/key.h
-private/key.h
+keys/
 
-# Tests
-*.txt
+# Demo
+demo/

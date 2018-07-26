@@ -2,47 +2,34 @@
 # Command Line Targets
 #
 
-all : test
+test : demo/sign demo/verify
+	@echo Now is the time for all good men to come to the aide of their country > demo/message.txt
+	@cat demo/message.txt  | demo/sign  | tee demo/signed.txt   | demo/verify
+	@sed 's/good/dumb/' demo/signed.txt | tee demo/tampered.txt | demo/verify
 
 keys : bin/keys
 	./bin/keys
 
-sign : bin/sign
-
-verify : bin/verify
-
-test : bin/sign bin/verify
-	@echo Now is the time for all good men to come to the aide of their country > message.txt
-	@cat message.txt | ./bin/sign | tee signed.txt | ./bin/verify
-	@sed 's/good men/ugly women/' signed.txt | tee tampered.txt | ./bin/verify
-
-# RE "ugly women": I'm not the bad guy; I'm only acting like one for the purpose of demonstration.
-
 clean :
-	rm -rf bin *.txt
+	rm -rf bin demo
 
 #
 # Compiled Targets
 #
 
-bin/keys : setup/keys.c | bin
+bin/keys : src/warden_keys.c
+	mkdir -p bin keys
 	gcc -g3 -O1 -Wall -std=c99 -I/usr/include $^ -o $@ -lcrypto
 
-private/key.h : bin/keys
+keys/warden_private_key.h : bin/keys
 	./bin/keys
 
-public/key.h : bin/keys
+keys/warden_public_key.h : bin/keys
 	./bin/keys
 
-bin/sign : private/key.h private/sign.c | bin
-	gcc -g3 -O1 -Wall -std=c99 -Iprivate -I/usr/include $^ -D DEMO -o $@ -lcrypto
+demo/sign : keys/warden_private_key.h src/warden_sign.c | demo
+	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I/usr/include $^ -D WARDEN_DEMO -o $@ -lcrypto
 
-bin/verify : public/key.h public/verify.c | bin
-	gcc -g3 -O1 -Wall -std=c99 -Ipublic -I/usr/include $^ -D DEMO -o $@ -lcrypto
+demo/verify : keys/warden_public_key.h src/warden_verify.c
+	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I/usr/include $^ -D WARDEN_DEMO -o $@ -lcrypto
 
-#
-# Directories
-#
-
-bin :
-	mkdir -p $@

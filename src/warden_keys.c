@@ -2,8 +2,8 @@
 
 #include <openssl/rsa.h>
 
-void print_param (FILE *f, const char *param, const BIGNUM *value) {
-	fprintf(f,"#define KEYPARAM_%-4s \"",param);
+void WARDEN_param (FILE *f, const char *param, const BIGNUM *value) {
+	fprintf(f,"#define WARDEN_%-4s \"",param);
 	BN_print_fp(f,value);
 	fprintf(f,"\"\n");
 }
@@ -32,10 +32,10 @@ int main () {
 
 	do {
 
-		pub = fopen("public/key.h","w");
+		pub = fopen("keys/warden_public_key.h","w");
 		if (pub == NULL) break;
 
-		prv = fopen("private/key.h","w");
+		prv = fopen("keys/warden_private_key.h","w");
 		if (prv == NULL) break;
 
 		/* generate a key */
@@ -59,21 +59,21 @@ int main () {
 
 		/* print the public parameters */
 		
-		print_param(pub,"N",n);
-		print_param(pub,"E",e);
+		WARDEN_param(pub,"N",n);
+		WARDEN_param(pub,"E",e);
 
 		/* print the private parameters */
 
-		print_param(prv,"N",n);
-		print_param(prv,"E",e);
-		print_param(prv,"D",d);
+		WARDEN_param(prv,"N",n);
+		WARDEN_param(prv,"E",e);
+		WARDEN_param(prv,"D",d);
 
-		print_param(prv,"P",p);
-		print_param(prv,"Q",q);
+		WARDEN_param(prv,"P",p);
+		WARDEN_param(prv,"Q",q);
 
-		print_param(prv,"DMP1",dmp1);
-		print_param(prv,"DMP2",dmp2);
-		print_param(prv,"IQMP",iqmp);
+		WARDEN_param(prv,"DMP1",dmp1);
+		WARDEN_param(prv,"DMP2",dmp2);
+		WARDEN_param(prv,"IQMP",iqmp);
 
 		result = 0;
 

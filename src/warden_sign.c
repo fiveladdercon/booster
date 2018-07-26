@@ -5,11 +5,11 @@
 #include <openssl/err.h>
 #include <openssl/rsa.h>
 
-#include "key.h"
+#include "warden_private_key.h"
 
 typedef unsigned char BYTE;
 
-int sign_bytes (const BYTE *msg, size_t mlen, BYTE *sig) {
+int WARDEN_sign_bytes (const BYTE *msg, size_t mlen, BYTE *sig) {
 	int          rc,result;
 	BIGNUM       *n,*e,*d,*p,*q,*dmp1,*dmp2,*iqmp;
 	RSA          *rsa;
@@ -43,28 +43,28 @@ int sign_bytes (const BYTE *msg, size_t mlen, BYTE *sig) {
 
 		/* Set the RSA private key */
 
-		BN_hex2bn(&n,KEYPARAM_N);
+		BN_hex2bn(&n,WARDEN_N);
 		if (n == NULL) break;
 
-		BN_hex2bn(&e,KEYPARAM_E);
+		BN_hex2bn(&e,WARDEN_E);
 		if (e == NULL) break;
 
-		BN_hex2bn(&d,KEYPARAM_D);
+		BN_hex2bn(&d,WARDEN_D);
 		if (d == NULL) break;
 
-		BN_hex2bn(&p,KEYPARAM_P);
+		BN_hex2bn(&p,WARDEN_P);
 		if (p == NULL) break;
 
-		BN_hex2bn(&q,KEYPARAM_Q);
+		BN_hex2bn(&q,WARDEN_Q);
 		if (q == NULL) break;
 
-		BN_hex2bn(&dmp1,KEYPARAM_DMP1);
+		BN_hex2bn(&dmp1,WARDEN_DMP1);
 		if (dmp1 == NULL) break;
 
-		BN_hex2bn(&dmp2,KEYPARAM_DMP2);
+		BN_hex2bn(&dmp2,WARDEN_DMP2);
 		if (dmp2 == NULL) break;
 
-		BN_hex2bn(&iqmp,KEYPARAM_IQMP);
+		BN_hex2bn(&iqmp,WARDEN_IQMP);
 		if (iqmp == NULL) break;
 
 		rsa = RSA_new();
@@ -120,7 +120,7 @@ int sign_bytes (const BYTE *msg, size_t mlen, BYTE *sig) {
 
 }
 
-int sign (const char *imessage, char *osignature) {
+int WARDEN_sign (const char *imessage, char *osignature) {
 	int     rc,result;
 	BYTE   *msg;
 	size_t  mlen;
@@ -138,7 +138,7 @@ int sign (const char *imessage, char *osignature) {
 		msg  = (BYTE *) imessage;
 		mlen = strlen(imessage)+1;
 
-		rc = sign_bytes(msg,mlen,sig);
+		rc = WARDEN_sign_bytes(msg,mlen,sig);
 		if (rc != 1) break;
 
 		hash = BN_bin2bn(sig,256,hash);
@@ -155,12 +155,12 @@ int sign (const char *imessage, char *osignature) {
 	return result;
 }
 
-#ifdef DEMO
+#ifdef WARDEN_DEMO
 int main () {
 	char msg[513];
 	char sig[513];
 	while (fgets(msg,513,stdin)) {
-		if (sign(msg,sig)) {
+		if (WARDEN_sign(msg,sig)) {
 			fprintf(stdout,"%s",msg);
 			fprintf(stdout,"%s\n",sig);
 		}

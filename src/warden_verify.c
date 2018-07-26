@@ -5,11 +5,11 @@
 #include <openssl/err.h>
 #include <openssl/rsa.h>
 
-#include "key.h"
+#include "warden_public_key.h"
 
 typedef unsigned char BYTE;
 
-int verify_bytes (const BYTE *msg, size_t mlen, const BYTE *sig) {
+int WARDEN_verify_bytes (const BYTE *msg, size_t mlen, const BYTE *sig) {
 	int          rc,result;
 	BIGNUM       *n,*e;
 	RSA          *rsa;
@@ -36,10 +36,10 @@ int verify_bytes (const BYTE *msg, size_t mlen, const BYTE *sig) {
 
 		/* Set the RSA public key */
 
-		BN_hex2bn(&n,KEYPARAM_N);
+		BN_hex2bn(&n,WARDEN_N);
 		if (n == NULL) break;
 
-		BN_hex2bn(&e,KEYPARAM_E);
+		BN_hex2bn(&e,WARDEN_E);
 		if (e == NULL) break;
 		
 		rsa = RSA_new();
@@ -89,7 +89,7 @@ int verify_bytes (const BYTE *msg, size_t mlen, const BYTE *sig) {
 	return result;
 }
 
-int verify (const char *imessage, const char *isignature) {
+int WARDEN_verify (const char *imessage, const char *isignature) {
 	int     result;
 	BYTE   *msg;
 	size_t  mlen;
@@ -114,7 +114,7 @@ int verify (const char *imessage, const char *isignature) {
 		slen = BN_bn2binpad(hash,sig,256);
 		if (slen != 256) break;
 
-		result = verify_bytes(msg,mlen,sig);
+		result = WARDEN_verify_bytes(msg,mlen,sig);
 
 	} while (0);
 
@@ -123,12 +123,12 @@ int verify (const char *imessage, const char *isignature) {
 	return result;
 }
 
-#ifdef DEMO
+#ifdef WARDEN_DEMO
 int main () {
 	char msg[513];
 	char sig[513];
 	while (fgets(msg,513,stdin) && fgets(sig,513,stdin)) {
-		fprintf(stdout, verify(msg,sig) ? "\e[32m" : "\e[31m");
+		fprintf(stdout, WARDEN_verify(msg,sig) ? "\e[32m" : "\e[31m");
 		fprintf(stdout,"%s",msg);
 	}
 	fprintf(stdout,"\e[0m");
