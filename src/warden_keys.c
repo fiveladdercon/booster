@@ -32,20 +32,21 @@ int main () {
 
 	do {
 
-		pub = fopen("keys/warden_public_key.h","w");
+		pub = fopen("warden_public_key.h","w");
 		if (pub == NULL) break;
 
-		prv = fopen("keys/warden_private_key.h","w");
+		prv = fopen("warden_private_key.h","w");
 		if (prv == NULL) break;
 
 		/* generate a key */
 
 		/*
-			The following call generates and compile note.
-			Upgrading requires digging into a new calling
-			convention, which isn't worth it since all
-			we're doing here is generating and dumping
-			a public/private key pair (once).
+			The following call generates a compile warning
+			regarding the call being deprecated. Upgrading
+			requires digging into a new calling convention, 
+			which isn't worth it since all we're doing here
+			is generating and dumping a public/private key
+			pair (once).
 		*/
 
 		rsa = RSA_generate_key(2048, RSA_F4, NULL, NULL);
