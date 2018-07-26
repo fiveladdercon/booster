@@ -116,17 +116,19 @@ One thing to consider is that signed messages are public and thus freely
 distributed, which means that without a mechanism to dissuade this kind of 
 distribution, the whole system can be defeated.
 
-The first line against this is to always serialize an expiry date, in which case
+The first line of defence is to always serialize an expiry date, in which case 
 if the feature set is leaked, at least it won't be forever.
 
-The second line against this is to serialize the personal contact information of
-the recipient into the authorization, in which case if the feature set is leaked, 
-you know darn well who leaked it.  This will deter most people, as it is a clear, 
-public statement that they are ripping you off.
+A second line of defence against this is to serialize the contact information of 
+the intended recipient into the authorization, in which case if the feature set 
+is leaked, we all know darn well who leaked it.  This will deter most *individuals*, 
+as it is a clear, public statement that they are ripping you off, but it has
+pitfalls when it comes to *organizations*, so use with caution.  As a rule,
+the larger the organization, the more trustworthy, as legitimate organizations 
+generally don't become large without building public trust.
 
-Another thing to consider is that the granting of trial feature authorization
-should not be automated, as it is easy to script issuing a request and unpacking
-the result, which again defeats the system.
+Another thing to consider is that automated feature authorization is easily
+defeated, as it is easy to script the request and unpack the result.
 
 
 Acknowledgements
@@ -135,10 +137,9 @@ Acknowledgements
 This API is pretty much a verbatim walk through of the [T-rsa.c.tar.gz][1]
 sample program on the [OpenSSL Sign & Verify wiki page][2].
 
-All I've done is just separated the key generation, sign and verify functions 
-into separate files, inlined and optimized the underlying calls and used RSA 
-get/set macros & BN conversion macros to write to and include the keys from 
-header files.
+All I did was separate the key generation, sign and verify functions into separate
+files, inline and optimize the underlying calls and use the RSA get/set macros &
+BN conversion macros to write to and include the keys from header files.
 
 But since the OpenSSL documentation is somewhat cryptic *(pun intended)*, I 
 spent quite a few hours sifting through the [source code][3] to get the key 
