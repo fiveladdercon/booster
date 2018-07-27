@@ -15,7 +15,7 @@ keys : keys/warden_keys
 	cd keys; ./warden_keys
 
 clean :
-	rm -rf demo
+	rm -rf demo/sign demo/verify demo/*.txt
 
 #
 # Compiled Targets
@@ -31,11 +31,9 @@ keys/warden_private_key.h : keys/warden_keys
 keys/warden_public_key.h : keys/warden_keys
 	cd keys; ./warden_keys
 
-demo/sign : keys/warden_private_key.h src/warden_sign.c
-	@mkdir -p demo
-	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I$(OPENSSL) $^ -D WARDEN_DEMO -o $@ -lcrypto
+demo/sign : keys/warden_private_key.h src/warden_sign.c demo/sign.c  
+	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I$(OPENSSL) $(filter %.c, $^) -o $@ -lcrypto
 
-demo/verify : keys/warden_public_key.h src/warden_verify.c
-	@mkdir -p demo
-	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I$(OPENSSL) $^ -D WARDEN_DEMO -o $@ -lcrypto
+demo/verify : keys/warden_public_key.h src/warden_verify.c demo/verify.c
+	gcc -g3 -O1 -Wall -std=c99 -Ikeys -I$(OPENSSL) $(filter %.c, $^) -o $@ -lcrypto
 

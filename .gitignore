@@ -2,4 +2,6 @@
 keys/
 
 # Demo
-demo/
+demo/sign
+demo/verify
+demo/*.txt

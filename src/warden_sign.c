@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 
 #include <openssl/evp.h>
@@ -154,17 +153,4 @@ int WARDEN_sign (const char *imessage, char *osignature) {
 
 	return result;
 }
-
-#ifdef WARDEN_DEMO
-int main () {
-	char msg[513];
-	char sig[513];
-	while (fgets(msg,513,stdin)) {
-		if (WARDEN_sign(msg,sig)) {
-			fprintf(stdout,"%s",msg);
-			fprintf(stdout,"%s\n",sig);
-		}
-	}
-}
-#endif
 
