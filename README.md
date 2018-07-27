@@ -1,8 +1,8 @@
 Warden
 ======
 
-A lightweight crypto sign & verify API built on the openssl crypto library to 
-manage the features available in a publicly distributed application.
+A lightweight sign & verify API built on the openssl crypto library to authorize
+the features available in a publicly distributed application.
 
 The intent is to embed a function in a publicly distributed application that will
 verify that feature authorization comes from the application distributor and 
@@ -131,19 +131,21 @@ Another thing to consider is that automated feature authorization is easily
 defeated, as it is easy to script the request and unpack the result.
 
 
-Acknowledgements
-----------------
+ACK
+---
 
 This API is pretty much a verbatim walk through of the [T-rsa.c.tar.gz][1]
 sample program on the [OpenSSL Sign & Verify wiki page][2].
 
 All I did was separate the key generation, sign and verify functions into separate
 files, inline and optimize the underlying calls and use the RSA get/set macros &
-BN conversion macros to write to and include the keys from header files.
+BIGNUM conversion macros to write to and include the keys from header files.
 
-But since the OpenSSL documentation is somewhat cryptic *(pun intended)*, I 
-spent quite a few hours sifting through the [source code][3] to get the key 
-persistence work.
+But since the OpenSSL documentation is somewhat cryptic\*, I spent quite a few 
+hours sifting through the [source code][3] to get the key persistence work.
+
+\* *pun intended, though I suspect the documentation is sparse for a reason.*
+
 
 [1]: https://wiki.openssl.org/images/e/eb/T-rsa.c.tar.gz
 [2]: https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying
